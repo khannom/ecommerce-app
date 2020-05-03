@@ -7,7 +7,7 @@ import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import Header from './components/header/header.component';
-import {auth} from './firebase/firebase.utils';
+import {auth, createUserProfileDocument} from './firebase/firebase.utils';
 
 // exact == exact = {true}
 // si exact es true, la page no se renderea a menos que la url sea exacta
@@ -28,8 +28,27 @@ class App extends React.Component{
   componentDidMount(){
     // onAuthStateChanged() siempre esta ejecutandose, no tenemos que fetchear datos manualmente
     // cada vez que fetch() se ejecuta, monta la pagina denuevo, eso es malo xd
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      this.setState({currentUser: user});
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if(userAuth){
+        const userRef = await createUserProfileDocument(userAuth);
+
+        //onSnapShot() es como onAuthStateChanged(), se llama cada que sucede un cambio en el snapshot
+        //esta funcion retorna siempre un snapshot la 1era vez que se ejecuta
+        userRef.onSnapshot(snapShot => {
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data()
+            }
+          })
+          console.log(this.state);
+        });
+        
+      }
+      else{
+        console.log(userAuth);
+        this.setState({currentUser: userAuth});
+      }
     })
   }
 
