@@ -13,12 +13,14 @@ const config = {
     measurementId: "G-G5XTW6ZWH5"
 };
 
+//userAuth es el objeto que nos devuelve firebase cuando logeamos, deslogeamos..
 export const createUserProfileDocument = async (userAuth, additionalData) => {
     if(!userAuth) return;
 
     const userRef = firestore.doc(`users/${userAuth.uid}`)
     
     const snapShot = userRef.get();
+    //esto esta asi porque sino snapShot.exists devuelve undefined y siempre entra al if
     if(!(await snapShot).exists ){
         const {displayName, email} = userAuth;
         const createdAt = new Date();
