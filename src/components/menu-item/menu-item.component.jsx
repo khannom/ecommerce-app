@@ -5,7 +5,8 @@ import {withRouter} from 'react-router-dom';
 import './menu-item.styles.scss';
 
 //`` pueden incluir cualquier codigo de javascript
-// div puede tener varias clases, se separan con un espacio
+//className puede tener varias clases, se separan con un espacio
+//qué es history.push() o.O xddd
 const MenuItem = ({ title, imageUrl, size, history, linkUrl, match }) => (
   <div 
     className={`menu-item ${size}`} 

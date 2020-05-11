@@ -8,5 +8,5 @@ const CustomButton = ({ children, buttonPurpose, ...otherProps }) => (
     {children}
   </button>
 );
-
+//deberia estar inverted dentro de los props 
 export default CustomButton;
